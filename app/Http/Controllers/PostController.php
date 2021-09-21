@@ -19,6 +19,8 @@ class PostController extends Controller
     {
         //
         $keyword = $request->get('search');
+        $perPageRecord = 3;
+
         if(!empty($keyword))
         {
             $posts = Post::select('id', 'title', 'slug' , 'excerpt' , 'body' , 'thumbnail' , 'created_at')  ->latest()
@@ -30,7 +32,7 @@ class PostController extends Controller
             ->orWhere('slug', 'LIKE' , "%$keyword%")
             ->orWhere('excerpt', 'LIKE' , "%$keyword%")
             ->orWhere('body', 'LIKE' , "%$keyword%")
-            ->paginate(3);
+            ->paginate($perPageRecord);
         }
         else
         {
@@ -40,7 +42,7 @@ class PostController extends Controller
                     'deleted_at' => null,
                     'user_id' => Session()->get('user_id')
                 ])
-            ->paginate(3);
+            ->paginate($perPageRecord);
         }
         
         return view('dashboard', [
