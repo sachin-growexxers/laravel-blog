@@ -12,7 +12,7 @@
                         style="font-size: 10px">Update Blog</a>
 
                     <a href="/post/destroy/{{ $post->id }}"
-                        class="px-3 py-1 border border-red-300 rounded-full text-red-300 text-xs uppercase font-semibold"
+                        class="px-3 py-1 border border-red-300 rounded-full text-red-300 text-xs uppercase font-semibold" onclick="return confirm('Are you sure you want to delete this blog?')"
                         style="font-size: 10px">Delete Blog</a>
                 </div>
 
@@ -22,8 +22,8 @@
                     </h1>
 
                     <span class="mt-2 block text-gray-400 text-xs">
-                            Published <time>{{ $post->created_at->diffForHumans() }}</time>
-                        </span>
+                        Published <time>{{ $post->created_at->diffForHumans() }}</time>
+                    </span>
                 </div>
             </header>
 
@@ -39,7 +39,7 @@
 
                 <div class="hidden lg:block">
                     <a href="/post/show/{{ $post->id }}"
-                        class="transition-colors duration-300 text-xs font-semibold bg-gray-200 hover:bg-gray-300 rounded-full py-2 px-8"
+                        class="transition-colors duration-300 text-xs font-semibold bg-gray-200 hover:bg-white-300 rounded-full py-2 px-8"
                     >Read More</a>
                 </div>
             </footer>
