@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 
@@ -15,6 +17,8 @@ use App\Models\Post;
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,14 +27,23 @@ Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth'])
 
 require __DIR__.'/auth.php';
 
-Route::get('/post/create', [PostController::class, 'create']);
+Route::get('/post/create', [PostController::class, 'create'])->middleware(['auth'])->name('create');
 
-Route::post('/post/store', [PostController::class, 'store']);
+Route::post('/post/store', [PostController::class, 'store'])->middleware(['auth'])->name('store');
 
-Route::get('/post/edit/{id}', [PostController::class, 'edit']);
+Route::get('/post/edit/{id}', [PostController::class, 'edit'])->middleware(['auth'])->name('edit');
 
-Route::get('/post/show/{id}', [PostController::class, 'show']);
+Route::get('/post/show/{id}', [PostController::class, 'show'])->middleware(['auth'])->name('show');
 
-Route::put('/post/update/{id}', [PostController::class, 'update']);
+Route::put('/post/update/{id}', [PostController::class, 'update'])->middleware(['auth'])->name('update');
 
-Route::get('/post/destroy/{id}', [PostController::class, 'destroy']);
+Route::get('/post/destroy/{id}', [PostController::class, 'destroy'])->middleware(['auth'])->name('destroy');
+
+Route::get('/post/sendMail', [PostController::class, 'sendMail'])->middleware(['auth'])->name('sendMail');
+
+//Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->middleware(['auth'])->name('update');
+
+Route::put('/profile/update/{id}', function()
+{
+    echo "sdfsfsfs";exit;
+});
