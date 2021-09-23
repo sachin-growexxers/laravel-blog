@@ -5,7 +5,7 @@
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
         </x-slot>
-
+        
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -51,6 +51,13 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+            
+            <div class="mt-5 flex items-center justify-end md:mt-5 float-right text-xs text-gray-600 hover:text-gray-900">
+                Don't have account? &nbsp;<a href="/register" class="underline">
+                    Register
+                </a>
+            </div>
+            
         </form>
     </x-auth-card>
 </x-guest-layout>
