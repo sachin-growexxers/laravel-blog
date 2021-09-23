@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -19,7 +20,6 @@ class PostController extends Controller
     {
         //
         $keyword = $request->get('search');
-        $perPageRecord = 3;
 
         if(!empty($keyword))
         {
@@ -28,11 +28,11 @@ class PostController extends Controller
                     'deleted_at' => null,
                     'user_id' => Session()->get('user_id')
                 ])
-            ->Where('title' , 'LIKE' , "%$keyword%")
-            ->orWhere('slug', 'LIKE' , "%$keyword%")
-            ->orWhere('excerpt', 'LIKE' , "%$keyword%")
-            ->orWhere('body', 'LIKE' , "%$keyword%")
-            ->paginate($perPageRecord);
+            ->Where('title' , 'LIKE' , "%". $keyword. "%")
+            ->orWhere('slug', 'LIKE' , "%". $keyword. "%")
+            ->orWhere('excerpt', 'LIKE' , "%". $keyword. "%")
+            ->orWhere('body', 'LIKE' , "%". $keyword. "%")            
+            ->paginate(3);
         }
         else
         {
@@ -40,11 +40,11 @@ class PostController extends Controller
             ->latest()
             ->where([
                     'deleted_at' => null,
-                    'user_id' => Session()->get('user_id')
-                ])
-            ->paginate($perPageRecord);
+                    'user_id' => Session('user_id')
+            ])
+            ->paginate(3);
         }
-        
+
         return view('dashboard', [
             'posts' => $posts
         ]);
@@ -192,5 +192,21 @@ class PostController extends Controller
         {
             return redirect('/dashboard')->with('flash', "Sorry, blog unable to delete.!!");
         }
+    }
+
+    public function sendMail()
+    {
+        $data = array('name'=>"Our Code World");
+        // Path or name to the blade template to be rendered
+        $template_path = 'emails.template';
+
+        Mail::send($template_path, $data, function($message) {
+            // Set the receiver and subject of the mail.
+            $message->to('sachin.sharma@growexx.com', 'Sachin Sharma')->subject('Laravel HTML Mail');
+            // Set the sender
+            $message->from('sachin.sharma@growexx.com','Our Code World');
+        });
+
+        return "Basic email sent, check your inbox.";
     }
 }
