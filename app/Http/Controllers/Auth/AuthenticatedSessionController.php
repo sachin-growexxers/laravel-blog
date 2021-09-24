@@ -33,6 +33,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        /* code to remember me */
+        $remember_me = $request->has('remember') ? true : false;
+
+        Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember_me);
+
+        /* code to store user id into session */
         $user_id = Auth::user()->id;
 
         Session::put('user_id', $user_id);
