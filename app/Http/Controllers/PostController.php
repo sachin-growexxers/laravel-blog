@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use Illuminate\Auth\Events\Validated;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -19,32 +21,27 @@ class PostController extends Controller
     {
         //
         $keyword = $request->get('search');
-        $perPageRecord = 3;
 
         if(!empty($keyword))
         {
             $posts = Post::select('id', 'title', 'slug' , 'excerpt' , 'body' , 'thumbnail' , 'created_at')  ->latest()
-            ->where([
-                    'deleted_at' => null,
-                    'user_id' => Session()->get('user_id')
-                ])
-            ->Where('title' , 'LIKE' , "%$keyword%")
-            ->orWhere('slug', 'LIKE' , "%$keyword%")
-            ->orWhere('excerpt', 'LIKE' , "%$keyword%")
-            ->orWhere('body', 'LIKE' , "%$keyword%")
-            ->paginate($perPageRecord);
+            ->Where('title' , 'LIKE' , "%". $keyword. "%")
+            ->orWhere('slug', 'LIKE' , "%". $keyword. "%")
+            ->orWhere('excerpt', 'LIKE' , "%". $keyword. "%")
+            ->orWhere('body', 'LIKE' , "%". $keyword. "%")
+            ->where('user_id', Session()->get('user_id'))
+            ->paginate(3);
+            $posts->appends (array ('search' => $keyword));
         }
         else
         {
             $posts = Post::select('id', 'title', 'slug' , 'excerpt' , 'body' , 'thumbnail' , 'created_at')
             ->latest()
-            ->where([
-                    'deleted_at' => null,
-                    'user_id' => Session()->get('user_id')
-                ])
-            ->paginate($perPageRecord);
+            ->where('user_id' , Session('user_id'))
+            ->paginate(3);
         }
-        
+
+        $user = User::findOrfail(Session::get('user_id'));
         return view('dashboard', [
             'posts' => $posts
         ]);

@@ -3,7 +3,7 @@
     <h5 class="text-3xl">Stay in touch with the latest posts</h5>
     <p class="text-sm mt-3">Promise to keep the inbox clean. No bugs.</p>
 
-    <div class="mt-10">
+    <!-- <div class="mt-10">
         <div class="relative inline-block mx-auto lg:bg-gray-200 rounded-full">
 
             <form method="POST" action="#" class="lg:flex text-sm">
@@ -23,5 +23,5 @@
                 </button>
             </form>
         </div>
-    </div>
+    </div> -->
 </footer>
