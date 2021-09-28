@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
@@ -41,9 +42,11 @@ class PostController extends Controller
             ->paginate(3);
         }
 
-        $user = User::findOrfail(Session::get('user_id'));
+        $categories = Category::all()
+                    ->where('deleted_at' , null);
         return view('dashboard', [
-            'posts' => $posts
+            'posts' => $posts,
+            'categories' => $categories
         ]);
     }
 
@@ -55,7 +58,11 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('create');
+        $categories = Category::all()
+                    ->where('deleted_at' , null);
+        return view('create', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -72,7 +79,8 @@ class PostController extends Controller
             'slug' => 'required|min:5|max:255',
             'excerpt' => 'required|min:5|max:255',
             'body' => 'required|min:5|max:500',
-            'thumbnail' => 'required|image'
+            'thumbnail' => 'required|image',
+            'category_id' => 'required|integer'
         ]);
 
         if($validator->fails())
@@ -88,7 +96,8 @@ class PostController extends Controller
             'slug' => $request->slug,
             'excerpt' => $request->excerpt,
             'body' => $request->body,
-            'thumbnail' => $request->file('thumbnail')->store('thumbnails')
+            'thumbnail' => $request->file('thumbnail')->store('thumbnails'),
+            'category_id' => $request->category_id
         ]);
 
         return redirect('/dashboard')->with('flash', "Blog added successfully.!!!");
@@ -104,8 +113,13 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrfail($id);
+        
+        $categories = Category::all()
+                    ->where('deleted_at' , null);
+
         return view('show', [
-            'post' => $post
+            'post' => $post,
+            'categories' => $categories
         ]);
     }
 
@@ -119,8 +133,13 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrfail($id);
+
+        $categories = Category::all()
+                    ->where('deleted_at' , null);
+
         return view('update', [
-            'post' => $post
+            'post' => $post,
+            'categories' => $categories
         ]);
     }
 
@@ -139,7 +158,8 @@ class PostController extends Controller
             'slug' => 'required|min:5|max:255',
             'excerpt' => 'required|min:5|max:255',
             'body' => 'required|min:5|max:500',
-            'thumbnail' => 'image|nullable'
+            'thumbnail' => 'image|nullable',
+            'category_id' => 'required|integer'
         ]);
 
         if($validator->fails())
@@ -164,7 +184,8 @@ class PostController extends Controller
             'slug' => $request->slug,
             'excerpt' => $request->excerpt,
             'body' => $request->body,
-            'thumbnail' => $thumbnailPath
+            'thumbnail' => $thumbnailPath,
+            'category_id' => $request->category_id
         ]);
 
         return redirect('/dashboard')->with('flash', "Blog updated successfully.!!!");
