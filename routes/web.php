@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\PostController;
@@ -28,6 +29,8 @@ Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth'])
 
 require __DIR__.'/auth.php';
 
+
+/* Route for post handling */
 Route::get('/post/create', [PostController::class, 'create'])->middleware(['auth'])->name('create');
 
 Route::post('/post/store', [PostController::class, 'store'])->middleware(['auth'])->name('store');
@@ -40,8 +43,15 @@ Route::put('/post/update/{id}', [PostController::class, 'update'])->middleware([
 
 Route::get('/post/destroy/{id}', [PostController::class, 'destroy'])->middleware(['auth'])->name('destroy');
 
+
+/* Route for email handling */
 Route::get('/email/sendMail', [EmailController::class, 'sendMail'])->middleware(['auth'])->name('sendMail');
 
+/* Route for profile handling */
 Route::get('/profile', [ProfileController::class, 'index'])->middleware(['auth'])->name('profile');
 
 Route::put('/profile/update/{id}', [ProfileController::class, 'update'])->middleware(['auth'])->name('update');
+
+
+/* Route for category handling*/
+Route::get('/category/{id}', [CategoryController::class, 'index'])->middleware(['auth'])->name('category');

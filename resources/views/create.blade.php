@@ -62,6 +62,21 @@
                     </p>
 
                     <p class="mt-4">
+                        <label for="title"> Category </label>
+                        <select name="category_id" class="ml-2 form-input p-1 px-1 py-1 mb-5 rounded-xl w-19">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}"> {{ $category->name }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('category')
+                            <p class="text-red-500 text-xs mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </p>
+
+                    <p class="mt-4">
                         <label for="title"> Thumbnail </label>
                         <input type="file" name="thumbnail" id="thumbnail" class="border border-gray-400 p-2 w-full" required />
 

@@ -30,6 +30,15 @@
                 <p class="mt-4">
                     {{ $post->excerpt }}
                 </p>
+
+                <p class="mt-4">
+                    <label for="title"> Category </label>
+                    <select disabled="true" name="category_id" class="ml-2 form-input p-1 px-1 py-1 mb-5 rounded-xl w-19">
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected' : ''}}> {{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </p>
             </div>
 
             <section class="mt-5 space-y-10"> 

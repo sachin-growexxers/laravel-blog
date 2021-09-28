@@ -49,9 +49,24 @@
                         <label for="title"> Body </label>
                         <textarea name="body" id="body" required class="resize-y w-100 border rounded-md px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full">{{ $post->body }}</textarea>
 
-                        @error('title')
+                        @error('body')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror                        
+                    </p>
+
+                    <p class="mt-4">
+                        <label for="title"> Category </label>
+                        <select name="category_id" class="ml-2 form-input p-1 px-1 py-1 mb-5 rounded-xl w-19">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected' : ''}}> {{ $category->name }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('category')
+                            <p class="text-red-500 text-xs mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </p>
 
                     <p class="mt-4">

@@ -6,25 +6,28 @@
     </x-slot>
 
     <section class="px-6 py-8">
-        <nav class="md:flex md:justify-between md:items-center float-right">
-            <div class="relative flex lg:inline-flex items-center bg-gray-100 rounded-xl px-3 py-2">
-                
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                    </select>
-                
-            </div>
+        <nav class="md:flex md:justify-between md:items-center float-right relative flex lg:inline-flex items-center bg-gray-100 rounded-xl">
+        
+            <div x-data="{show : false}" class="py-2 pl-3 pr-9 text-lg">
 
-            <div class="relative flex lg:inline-flex items-center bg-gray-100 rounded-xl px-3 py-2">
+                <button @click="show = ! show">Categories</button>
+
+                <div x-show="show" class="py-2 absolute bg-gray-300 rounded-xl w-32">
+                    @foreach($categories as $category)
+                        <a href="/category/{{ $category->id }}" class="block text-left px-3 text-sm leading-5 hover:bg-white">{{ $category->name }}</a>
+                    @endforeach
+                </div>
+
+            </div>
+            
+            <div class="relative flex lg:inline-flex items-center bg-gray-100 rounded-xl">
                 <form method="GET" action="#">
                     <input type="text" name="search" placeholder="Find something"
-                            class="mb-5 bg-transparent placeholder-black font-semibold text-sm border border-black-900 bg-white px-4 py-2 rounded-xl">
+                            class="bg-transparent placeholder-black font-semibold text-sm border border-black-900 bg-white px-4 py-2 rounded-xl">
                 </form>
             </div>
 
-            <div class="mt-8 md:mt-0 mb-5">
+            <div class="mt-8 md:mt-0">
                 <a href="/post/create" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
                     Create Blog
                 </a>
